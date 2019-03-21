@@ -8,7 +8,7 @@
 from pathlib import Path
 from facebook_business.api import FacebookAdsApi
 from facebook_business.adobjects.adaccount import AdAccount
-import  facebook_business.adobjects.adset as adset
+import facebook_business.adobjects.adset as adset
 from facebook_business.adobjects.ad import Ad
 import facebook_business.adobjects.campaign as campaign
 from facebook_business.adobjects.adcreative import AdCreative
@@ -59,7 +59,7 @@ ADSET_FIELD = {
     'status':adset.AdSet.Field.status
 }
 CAMPAIGN_INSIGHTS_FIELD = {
-    'campaign_id': AdsInsights.Field.id,
+    'campaign_id': AdsInsights.Field.campaign_id,
 }
 ADSET_INSIGHTS_FIELD = {
     'adset_id': AdsInsights.Field.adset_id,
@@ -236,19 +236,18 @@ class Campaigns(object):
             params=params,
             fields=list( GENERAL_FIELD.values() )+list( TARGET_FIELD.values() )
         )
+        self.campaign_insights.update( { Field.cost_per_target:0 } )
+        self.campaign_insights.update( { Field.target:0 } )
         if len(insights) > 0:
             current_campaign = insights[0]
             if current_campaign.get(Field.impressions):
                 spend = int( current_campaign.get( Field.spend ) )
-                self.campaign_insights.update( { Field.cost_per_target:0 } )
-                self.campaign_insights.update( { Field.target:0 } )
                 try:
                     for act in current_campaign.get( Field.actions ):
                         if act["action_type"] == CAMPAIGN_OBJECTIVE_FIELD[ self.charge_type ]:
                             target = int( act["value"] )
                             self.campaign_insights.update( {Field.target:target} )
                             self.campaign_insights.update( {Field.cost_per_target:spend/target} )
-
                 except Exception as e:
                     print('[facebook_datacollector.Campaigns.get_campaign_insights]', e)
                 for campaign_field in list( GENERAL_FIELD.keys() ):
@@ -261,7 +260,7 @@ class Campaigns(object):
                     '''assign to field target and cost_per_target'''
                     self.campaign_insights[ Field.target ] = self.campaign_insights.pop( Field.clicks )
                     self.campaign_insights[ Field.cost_per_target ] = self.campaign_insights.pop( Field.cpc )
-                return self.campaign_insights
+            return self.campaign_insights
 
     def get_adsets( self ):
         adset_list=list()
@@ -284,7 +283,12 @@ class Campaigns(object):
         self.campaign_features[ Field.campaign_id ] = self.campaign_features.pop('id')
         self.campaign_features[ Field.target_type ] = self.campaign_features.pop('objective')
         self.campaign_features[ Field.start_time ] = datetime.datetime.strptime( self.campaign_features[Field.start_time],'%Y-%m-%dT%H:%M:%S+%f' )
-        self.campaign_features[ Field.stop_time ] = datetime.datetime.strptime( self.campaign_features[Field.stop_time],'%Y-%m-%dT%H:%M:%S+%f' )
+        try:
+            self.campaign_features[ Field.stop_time ] = datetime.datetime.strptime( self.campaign_features[Field.stop_time],'%Y-%m-%dT%H:%M:%S+%f' )
+            self.campaign_features[Field.spend_cap]
+        except:
+            self.campaign_features[ Field.stop_time ] = datetime.datetime.now() + datetime.timedelta(7)
+            self.campaign_features[Field.spend_cap] = 10000
         self.campaign_features[ Field.period ] = ( self.campaign_features[Field.stop_time] - self.campaign_features[Field.start_time] ).days
         self.campaign_features[ Field.start_time ] = self.campaign_features[Field.start_time].strftime( '%Y-%m-%d %H:%M:%S' )
         self.campaign_features[ Field.stop_time ] = self.campaign_features[Field.stop_time].strftime( '%Y-%m-%d %H:%M:%S' )
@@ -417,7 +421,6 @@ def data_collect( campaign_id, total_clicks, charge_type ):
     
 #     from tabulate import tabulate
 #     print(tabulate(df_camp,headers=df_camp.columns, tablefmt='psql'))
-    
     mysql_adactivity_save.update_campaign_target(df_camp)#update to campaign_target
     return
 
@@ -429,6 +432,12 @@ def make_default( campaign_id, charge_type ):
     for adset_id in adset_list:
         adset = AdSets(adset_id, charge_type)
         adset_dict = adset.generate_adset_info()
+        try:
+            adset_dict['bid_amount']
+            adset_dict['daily_budget']
+        except:
+            adset_dict['bid_amount']=100
+            adset_dict['daily_budget']=100
         if not bool(adset_dict):
             pass
         else:

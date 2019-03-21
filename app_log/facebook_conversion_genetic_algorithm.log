@@ -1,0 +1,61 @@
+campaign_id: 23843950299930337
+Generation 0: optimal function value is: -0.990384; average function value is -0.981762
+Generation 1: optimal function value is: 103.988020; average function value is 63.268586
+Generation 2: optimal function value is: 103.988020; average function value is 67.456903
+Optimal function value is: 103.988020; 
+Optimal solution is:
+m1--m2--m3--m4--m5--m6--mspend--mbid
+[7.74099425 9.54814697 9.5112441  8.3521656  8.88988133 5.67788377
+ 9.88876227 7.68361387]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+[[-2.2051484]]
+optimal_weight: [7.74099425 9.54814697 9.5112441  8.3521656  8.88988133 5.67788377
+ 9.88876227 7.68361387]
+0:00:27.824002
+campaign_id: 23843965453120337
+Generation 0: optimal function value is: -0.977798; average function value is -0.959506
+Generation 1: optimal function value is: 45.039999; average function value is 26.727411
+Generation 2: optimal function value is: 45.039999; average function value is 27.925739
+Optimal function value is: 45.039999; 
+Optimal solution is:
+m1--m2--m3--m4--m5--m6--mspend--mbid
+[5.59886006 9.99718844 2.11405636 9.89390928 7.57489095 0.03116477
+ 9.69153542 9.32503547]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+[[-0.36649994]]
+optimal_weight: [5.59886006 9.99718844 2.11405636 9.89390928 7.57489095 0.03116477
+ 9.69153542 9.32503547]
+0:00:51.922064
+campaign_id: 23843286422270175
+Generation 0: optimal function value is: -0.900175; average function value is -0.714133
+Generation 1: optimal function value is: 10.017522; average function value is 5.758683
+Generation 2: optimal function value is: 10.017522; average function value is 6.172605
+Optimal function value is: 10.017522; 
+Optimal solution is:
+m1--m2--m3--m4--m5--m6--mspend--mbid
+[7.84728221 0.79634007 3.51883245 5.52806027 1.8742109  8.75991887
+ 0.54504943 9.98458135]
+[[9.43953191]]
+[[9.43953191]]
+[[9.43953191]]
+[[9.43953191]]
+[[9.43953191]]
+[[9.43953191]]
+optimal_weight: [7.84728221 0.79634007 3.51883245 5.52806027 1.8742109  8.75991887
+ 0.54504943 9.98458135]
+0:01:15.956868
+0:01:15.956884

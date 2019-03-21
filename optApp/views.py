@@ -47,7 +47,7 @@ def opt_api(request):
         charge_type = request.POST.get(Field.charge_type)
         media = request.POST.get(Field.media)
         print(campaign_id, destination, charge_type, media)
-        print(media == None)
+        print(campaign_id and destination and charge_type)
 #         if campaign_id and destination and charge_type and media: # new release version
         if campaign_id and destination and charge_type: #temporary working version
             if media == 'Facebook' or media is None:
@@ -58,7 +58,7 @@ def opt_api(request):
                 if queue:
                     print(campaign_id, destination)
                     campaign = Campaigns( int(campaign_id), charge_type )
-                    campaign_dict = campaign.to_campaign()
+                    campaign_dict = campaign.generate_campaign_info()
                     try:lifetime_target = campaign_dict['target']
                     except:lifetime_target=0
                     try:
@@ -79,7 +79,9 @@ def opt_api(request):
                         **target_dict,
                         **target_left_dict,
                     }
+                    print(campaign_dict)
                     df_camp = pd.DataFrame( campaign_dict, index=[0] )
+                    df_camp[df_camp.columns] = df_camp[df_camp.columns].apply(pd.to_numeric, errors='ignore')
                     mysql_adactivity_save.update_campaign_target(df_camp)
                     try:
 #                         mydict = mysql_adactivity_save.get_result( campaign_id ) #new version
