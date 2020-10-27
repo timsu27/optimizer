@@ -14,7 +14,7 @@ colorama==0.3.7
 command-not-found==0.3
 configobj==5.0.6
 constantly==15.1.0
-cryptography==2.1.4
+cryptography==3.2
 curlify==2.1.1
 decorator==4.3.2
 defusedxml==0.5.0
