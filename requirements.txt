@@ -100,7 +100,7 @@ SQLAlchemy==1.2.18
 ssh-import-id==5.7
 systemd-python==234
 tensorboard==1.13.0
-tensorflow==1.13.1
+tensorflow==2.5.0
 tensorflow-estimator==1.13.0
 termcolor==1.1.0
 terminado==0.8.1
